@@ -50,8 +50,8 @@ function findLarger(a, b) {
  *  //> "tie"
  */
 function findLargerOrTie(a, b) {
-  if (a === b) return "tie";
-  return (a > b) ? a : b; 
+  return (a === b) ? "tie" :
+    (a > b) ? a : b; 
 }
 
 /**
@@ -73,8 +73,8 @@ function findLargerOrTie(a, b) {
  *  //> "Positive"
  */
 function positiveNegativeOrZero(a) {
-  if (a === 0) return "Zero";
-  return (a > 0) ? "Positive" : "Negative";
+  return (a === 0) ? "Zero" : 
+  (a > 0) ? "Positive" : "Negative";
 }
 
 /**
@@ -197,9 +197,7 @@ function calculateLetterGrade(grade) {
  *  //> "1 pig"
  */
 function animalCounts(animal, numberOfAnimals) {
-  let output = `${numberOfAnimals} ${animal}`;
-  if (numberOfAnimals > 1) output += 's';
-  return output;
+    return numberOfAnimals + ' ' + animal + `${(numberOfAnimals > 1) ? 's' : ''}`
 }
 
 /**
