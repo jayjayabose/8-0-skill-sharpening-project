@@ -192,19 +192,19 @@ function getFullAddress(person) {
 function getFlatObject(person) {
   //create object
   let result ={};
-  
-  //interate over names and insert
-  for (const [key, value] of Object.entries(person.names)){
-    //create key value pair in output
-    result[key] = value;
-  }
-  //interate over address
-  for (const [key, value] of Object.entries(person.address)){
-    //create key value pair in output
-    result[key] = value;
-  }
+  //create person.names key value pairs
+  addKeyValues(result, person.names);
+  //create person.address key value pairs
+  addKeyValues(result, person.address);
+  //create numbers key value
   result.numbers = person.numbers;
   return result;
+}
+
+function addKeyValues(resultObj, inputObj){
+  for (const [key, value] of Object.entries(inputObj)){
+    resultObj[key] = value;
+  }
 }
 
 // Do not change the code below.
