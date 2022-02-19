@@ -1,3 +1,5 @@
+const { product } = require("prelude-ls");
+
 /**
  * applyDiscount()
  * ---------------------
@@ -19,7 +21,16 @@
  *  applyDiscount(1000, 9, true);
  *  //> 700
  */
-function applyDiscount(priceInCents, age, hasMembership) {}
+function applyDiscount(priceInCents, age, hasMembership) {
+  //create discount amount
+  let discount = 0;
+  //check age, apply discount
+  if (age <= 10 || age >= 65) discount += .1;
+  //check for membership, apply discount
+  if (hasMembership) discount += .2; 
+  //apply discount and return price
+  return priceInCents * (1- discount);
+}
 
 /**
  * getCartTotal()
@@ -40,7 +51,16 @@ function applyDiscount(priceInCents, age, hasMembership) {}
     getCartTotal(cart);
  *  //> "$30.00"
  */
-function getCartTotal(products) {}
+function getCartTotal(products) {
+  //create a total
+  let total = 0;
+  //loop through array of product objects, increment total by price * quantity
+  products.forEach(product => { 
+    total += product.priceInCents * product.quantity;
+  });
+  //format total, return
+  return `\$${(total / 100).toFixed(2)}`;  
+}
 
 /**
  * compareLocations()
@@ -80,7 +100,26 @@ function getCartTotal(products) {}
     compareLocations(address1, address2);
     //> "Same city."
  */
-function compareLocations(address1, address2) {}
+function compareLocations(address1, address2) {
+  //HELPER FUNCTION WOULD MAKE THIS MORE ELEGANT
+  //set relationship inital value;
+  let relationship = "Addresses are not near each other.";
+
+  //check state, if not equal return relationship
+  if (address1.state != address2.state) return relationship;
+  // update relationship 
+  relationship = "Same state.";
+
+  //check city, if not equal return relationship
+  if (address1.city != address2.city) return relationship;
+  relationship = "Same city.";
+
+  //check building, if not equal return relationship
+  if (address1.street != address2.street) return relationship;
+  relationship = "Same building.";
+
+  return relationship;  
+}
 
 /**
  * gradeAssignments()
@@ -127,7 +166,39 @@ function compareLocations(address1, address2) {}
     //>   },
     //> ];
  */
-function gradeAssignments(assignments) {}
+function gradeAssignments(assignments) {
+    //loop through each assignment in array
+    assignments.forEach(assignment => {
+      //create status
+      let status = '';
+
+      //determine assignment type and determine and update status
+      switch (assignment.kind) {
+        case 'PASS-FAIL':
+          //set status
+          // `"PASSED"` if the `score.received` equals the `score.max`.
+          status = (assignment.score.received === assignment.score.max) ? 'PASSED' : 'FAILED';
+          break;
+  
+        case 'PERCENTAGE':
+          //set status
+          // `"PASSED: <percentage>"` if the student scored at least 80.0%. set `<percentage>` to one decimal place. If the student scored less than 80.0%, set the status to `"FAILED: <percentage>"`.
+          let percent = assignment.score.received / assignment.score.max * 100;
+          let percentFormatted = percent.toFixed(1)+'%';
+          status = (percent >= 80) ? `PASSED: ${percentFormatted}` : `FAILED: ${percentFormatted}`;
+          break;
+  
+        default:
+        //set status
+        // set the `status` value to equal `"SCORE: <received>/<max>"`, where `<received>` is the `score.received` value and `<max>` is the `score.max` value.
+        status = `SCORE: ${assignment.score.received}/${assignment.score.max}`;
+      }
+      //add status to assignment object
+      assignment.status = status;
+    });
+    //return assignments array
+    return assignments;
+}
 
 /**
  * createLineOrder()
@@ -152,7 +223,20 @@ function gradeAssignments(assignments) {}
     createLineOrder(people);
     //> [ "Ray Anderson", "America Marsh", "Wade Carson", "Patience Patel" ]
  */
-function createLineOrder(people) {}
+function createLineOrder(people) {
+  //create member and non-member arrays
+  let members = [];
+  let nonMembers = [];
+
+  //loop through array of people
+  people.forEach(person => {
+    //check hasMembership -> true add to member name array : false add to non-member name array
+    (person.hasMembership) ? members.push(person.name) : nonMembers.push(person.name);
+  });
+
+  //combine and return member and non member arrays
+  return members.concat(nonMembers);  
+}
 
 module.exports = {
   applyDiscount,
